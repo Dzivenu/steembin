@@ -1,0 +1,34 @@
+body {
+  font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif;
+  font-size: 2em;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+.btn {
+}
+
+.Home .jumbotron {
+  background-color: none;
+  text-align: center;
+}
+
+.Home .jumbotron pre code {
+  width: auto;
+}
+
+.Post {
+  max-width: 760px;
+  margin: 20px auto;
+}
+
+.Post .Post__body img {
+  max-width: 100%;
+  margin: 0 auto;
+}

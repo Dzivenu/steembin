@@ -1,0 +1,39 @@
+<div class="Home">
+  <div class="jumbotron">
+    <h1>{{appName}}</h1>
+    <p class="lead">
+      {{appName}} is the easiest way to post content to the Steem and Steemit
+      network.
+    </p>
+    <div class="container">
+      <a href="#" class="btn btn-large btn-success">
+        Download now
+      </a>
+      <br />
+      <br />
+      <code class="bash">
+        $ npm install -g steembin
+      </code>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Latest Posts Made with {{appName}}</h2>
+
+    <div class="list-group">
+      {{#each latest}}
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">
+            <a href="{{link}}">
+              {{title}}
+            </a>
+          </h4>
+
+          <p class="list-group-item-text">
+            By <a href="{{author_link}}">{{author}}</a>
+          </p>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
