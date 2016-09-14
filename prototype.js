@@ -58,7 +58,7 @@ app.get('/', (req, res, next) => {
 
 const themes = require('./themes');
 app.get('/:parent_permalink/:author/:permalink', (req, res, next) => {
-  Promise.coroutine(() => {
+  Promise.coroutine(async () => {
     const parent_permalink = req.params.permalink;
     const author = req.params.author;
     const permalink = req.params;
