@@ -3,7 +3,7 @@ ghost-themes: FORCE
 	for i in ./views/themes/*; do \
 			if [ -d $$i ]; then \
 				cd $$i; \
-				unzip ./master.zip; \
+				unzip ./master.zip > /dev/null 2>&1; \
 				rm ./master.zip; \
 				rm -rf ./*/node_modules; \
 				cd -; \
