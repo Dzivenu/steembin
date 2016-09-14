@@ -65,9 +65,9 @@ app.get('/', wrap(async (req, res) => {
 
 const themes = require('./themes');
 app.get('/:parent_permalink/:author/:permalink', wrap(async (req, res) => {
-  const parent_permalink = req.params.permalink;
+  const parent_permalink = req.params.parent_permalink;
   const author = req.params.author;
-  const permalink = req.params;
+  const permalink = req.params.permalink;
   // console.log(
   //   `/${parent_permalink}/${author}/${permalink}`
   // );
@@ -75,6 +75,7 @@ app.get('/:parent_permalink/:author/:permalink', wrap(async (req, res) => {
   const state = await cachedGetStateAsync(
     `/${parent_permalink}/@${author}/${permalink}`
   );
+  console.log(Object.keys(state.content))
   const post = _.extend(state.content[author + '/' + permalink], {
     body_html: marked(state.content[author + '/' + permalink].body, {
       sanitize: true,
@@ -85,6 +86,7 @@ app.get('/:parent_permalink/:author/:permalink', wrap(async (req, res) => {
   try {
     meta = JSON.parse(post.json_metadata);
   } catch (err) {}
+  //console.log(state.content, post, meta);
 
   if (meta.theme && themes.byName[meta.theme]) {
     const theme = themes.byName[meta.theme];
