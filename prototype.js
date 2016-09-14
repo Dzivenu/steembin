@@ -132,8 +132,9 @@ Promise.promisifyAll(steem.broadcast, {
 });
 
 if (!module.parent) {
-  app.listen(8888, () => {
-    console.log('Listening on port ' + 8888);
+  const port = process.env.PORT || 8888;
+  app.listen(port, () => {
+    console.log('Listening on port ' + port);
   });
 }
 
