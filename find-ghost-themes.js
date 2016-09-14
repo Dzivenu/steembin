@@ -45,7 +45,7 @@ whileNoError(getThemes, function(err, allResults) {
     console.log('Downloading ' + theme.name + '...');
     const outS = request.get(target)
       .pipe(fs.createWriteStream('./views/themes/' + theme.name + '/master.zip'))
-      .on('end', () => console.log('Downloaded ' + theme.name))
+      .on('done', () => console.log('Downloaded ' + theme.name))
       .on('error', () => console.log('Error ' + theme.name));
   });
 }, 1, []);
