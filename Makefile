@@ -7,7 +7,8 @@ ghost-themes: FORCE
 				rm ./master.zip; \
 				rm -rf ./*/node_modules; \
 				cd -; \
-				if ! [ -f $$i/*/post.hbs ]; then \
+				if [ -f $$i/*/post.hbs ]; then \
+				else; \
 					rm -rf $$i; \
 					rm -rf $$i.json; \
 				fi; \
