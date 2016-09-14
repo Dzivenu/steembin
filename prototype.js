@@ -53,11 +53,13 @@ app.use('/static', express.static('./static'));
 app.use('/themes', express.static('./views/themes'));
 
 app.get('/', wrap(async (req, res) => {
-  const state = await steem.api.getStateAsync('/trending');
-
+  const state = await steem.api.getStateAsync('/trending').spread(c => c);
+  const posts = patchLinks(state.content);
+  //console.log(state.content);
+  //console.log(posts);
   res.render('home', {
     appName,
-    latest: patchLinks(state.content),
+    latest: posts,
   });
 }));
 
