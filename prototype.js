@@ -1,6 +1,8 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
+const bodyParser = require('body-parser');
 const cacheManager = require('cache-manager');
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const expressHandlebars = require('express-handlebars');
 const expressPromise = require('express-promise');
@@ -29,6 +31,8 @@ app.engine('.hbs', expressHandlebars({
 }));
 app.set('view engine', '.hbs');
 app.use(expressPromise());
+app.use(cookieParser());
+app.use(bodyParser());
 
 function patchLink(post) {
   // console.log(JSON.stringify(post));
@@ -53,7 +57,7 @@ app.use('/static', express.static('./static'));
 app.use('/themes', express.static('./views/themes'));
 
 app.get('/', wrap(async (req, res) => {
-  const state = await steem.api.getStateAsync('/trending').spread(c => c);
+  const state = await cachedGetStateAsync('/trending');
   const posts = patchLinks(state.content);
   //console.log(state.content);
   //console.log(posts);
@@ -64,6 +68,22 @@ app.get('/', wrap(async (req, res) => {
 }));
 
 const themes = require('./themes');
+const ghThemes = _.filter(themes, {url_type: 'github'})
+
+app.get('/themes', wrap(async (req, res) => {
+  res.render('themes', {
+    appName,
+    themes: _.map(ghThemes, (t) => _.extend(t, {
+      is_current: t.name === req.cookies.theme_name,
+    })),
+  });
+}));
+
+app.post('/themes', wrap(async (req, res) => {
+  res.cookie('theme_name', req.body.theme_name);
+  res.redirect('/themes');
+}));
+
 app.get('/:parent_permalink/:author/:permalink', wrap(async (req, res) => {
   const parent_permalink = req.params.parent_permalink;
   const author = req.params.author;
@@ -88,8 +108,9 @@ app.get('/:parent_permalink/:author/:permalink', wrap(async (req, res) => {
   } catch (err) {}
   //console.log(state.content, post, meta);
 
-  if (meta.theme && themes.byName[meta.theme]) {
-    const theme = themes.byName[meta.theme];
+  const themeName = req.cookies.theme_name || meta.theme;
+  if (themeName && themes.byName[themeName]) {
+    const theme = themes.byName[themeName];
     if (theme) {
       const templates = await expressHandlebars.create({
         extname: '.hbs'
@@ -110,7 +131,7 @@ app.get('/:parent_permalink/:author/:permalink', wrap(async (req, res) => {
         templates: _.mapKeys(templates, (v, k) => path.basename(k, '.hbs')),
         layout: theme.filepath + '/default.hbs',
         helpers: {
-          tags: () => meta.tags.join(', '),
+          tags: () => meta.tags && meta.tags.join(', '),
           asset: (s) => '/' + theme.filepath + '/assets/' + s,
           date: () => moment(post.created).format('DD/MM/YYYY'),
           encode: (s) => s,

@@ -40,12 +40,13 @@ whileNoError(getThemes, function(err, allResults) {
   groups.github.forEach((theme) => {
     const target = theme.url + '/archive/master.zip';
     mkdirp.sync('./views/themes/' + theme.name);
+    fs.writeFileSync('./views/themes/' + theme.name + '.json', JSON.stringify(theme, null, 2))
+    console.log('Write ' + theme.name + '.json...');
     console.log('Downloading ' + theme.name + '...');
     const outS = request.get(target)
       .pipe(fs.createWriteStream('./views/themes/' + theme.name + '/master.zip'))
       .on('end', () => console.log('Downloaded ' + theme.name))
       .on('error', () => console.log('Error ' + theme.name));
-    fs.writeFileSync('./views/themes/' + theme.name + '.json', JSON.stringify(theme, null, 2))
   });
 }, 1, []);
 
@@ -67,7 +68,7 @@ function getThemes(page, cb) {
           name: $(el).find('.theme-name').text(),
           author: $(el).find('.developer-name').text(),
           author_url: $(el).find('.developer-name').attr('href'),
-          image_url: 'https:' + $(el).find('img').attr('src'),
+          image_url: 'http://' + $(el).find('img').attr('src'),
         };
       }).get();
       cb(null, themes);
