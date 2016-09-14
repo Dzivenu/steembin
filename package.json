@@ -31,6 +31,8 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "node ./prototype.js",
+    "postinstall": "make ghost-themes",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

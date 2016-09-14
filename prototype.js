@@ -13,6 +13,7 @@ const steem = require('steem');
 
 const cache = cacheManager.caching({
   store: redisStore,
+  url: process.env.REDIS_URL,
   ttl: 600,
 });
 
