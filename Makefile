@@ -8,7 +8,7 @@ ghost-themes: FORCE
 				rm -rf ./*/node_modules; \
 				cd -; \
 				if [ -f $$i/*/post.hbs ]; then echo "Skip"; \
-				else; \
+				else \
 					rm -rf $$i; \
 					rm -rf $$i.json; \
 				fi; \
