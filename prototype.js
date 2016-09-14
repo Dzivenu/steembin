@@ -53,7 +53,7 @@ app.get('/', (req, res, next) => {
       appName,
       latest: patchLinks(state.content),
     });
-  })().then(next, next);
+  })().then(null, next);
 });
 
 const themes = require('./themes');
@@ -117,7 +117,7 @@ app.get('/:parent_permalink/:author/:permalink', (req, res, next) => {
       appName,
       post,
     });
-  }).then(next, next);
+  }).then(null, next);
 });
 
 app.use((err, req, res, next) => {
