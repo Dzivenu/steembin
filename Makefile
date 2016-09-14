@@ -8,8 +8,8 @@ ghost-themes: FORCE
 				rm -rf ./*/node_modules; \
 				cd -; \
 				if ! [ -f $$i/post.hbs ]; then \
-					rm -rf $$i
-					rm -rf $$i.json
+					rm -rf $$i; \
+					rm -rf $$i.json; \
 				fi; \
 			fi; \
 		done
