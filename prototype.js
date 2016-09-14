@@ -81,7 +81,10 @@ app.get('/:parent_permalink/:author/:permalink', wrap(async (req, res) => {
       gfm: true,
     }),
   });
-  const meta = JSON.parse(post.json_metadata);
+  let meta = {};
+  try {
+    meta = JSON.parse(post.json_metadata);
+  } catch (err) {}
 
   if (meta.theme && themes.byName[meta.theme]) {
     const theme = themes.byName[meta.theme];
