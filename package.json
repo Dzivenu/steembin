@@ -34,7 +34,7 @@
   "devDependencies": {},
   "scripts": {
     "start": "node --require babel-register ./prototype.js",
-    "postinstall": "mkdir -p views/themes views/layouts/themes",
+    "postinstall": "make ghost-themes",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
