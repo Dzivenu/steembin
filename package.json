@@ -34,6 +34,7 @@
   "devDependencies": {},
   "scripts": {
     "start": "node --require babel-register ./prototype.js",
+    "start-dev": "nodemon --require babel-register --ignore views ./prototype.js",
     "postinstall": "git clean -fd; make ghost-themes",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

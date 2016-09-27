@@ -18,13 +18,8 @@ h1, h2, h3, h4, h5, h6 {
 .btn {
 }
 
-.Home .jumbotron {
-  background-color: none;
-  text-align: center;
-}
-
-.Home .jumbotron pre code {
-  width: auto;
+.Home > .fluid-container > div > a {
+  font-size: 0.8em;
 }
 
 .Post {
@@ -35,4 +30,40 @@ h1, h2, h3, h4, h5, h6 {
 .Post .Post__body img {
   max-width: 100%;
   margin: 0 auto;
+}
+
+.list-group-item {
+  display: flex;
+  font-size: 0.7em;
+  border: none;
+}
+
+.list-group-item:first-child {
+  border-radius: 0;
+}
+
+.list-group-item h4 {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.list-group-item-votes-container {
+  display: flex;
+  flex: 0 1 0;
+  min-width: 80px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-right: 10px;
+}
+
+.list-group-item-content-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+}
+
+.list-group-item-payout {
+  font-size: 0.8em;
 }

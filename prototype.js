@@ -39,12 +39,22 @@ function patchLink(post) {
   // console.log(JSON.stringify(post));
   return _.extend(post, {
     author_link: 'https://steemit.com/@' + post.author,
-    link: '/' + post.parent_permlink + '/' + post.author + '/' + post.permlink,
+    link: '/' + post.parent_permlink + '/@' + post.author + '/' + post.permlink,
   });
 }
 
 function patchLinks(posts) {
   return _.map(posts, patchLink);
+}
+
+function addHumanTimestamps(posts) {
+  const now = moment();
+  return _.map(posts, (post) => {
+    return _.extend(post, {
+      human_timestamp: moment.duration(now.diff(new Date(post.created))).humanize(),
+      no_comments: !post.children,
+    });
+  });
 }
 
 function wrap(fn) {
@@ -57,14 +67,60 @@ function wrap(fn) {
 app.use('/static', express.static('./static'));
 app.use('/themes', express.static('./views/themes'));
 
+app.get('/goto', (req, res) => {
+  res.redirect(req.query.category || '/');
+});
+
+app.get('/trending/:category?', handler('trending'));
+app.get('/hot/:category?', handler('hot'));
+app.get('/new/:category?', handler('new'));
+app.get('/promoted/:category?', handler('promoted'));
+app.get('/:category?', handler());
+
+function handler(type) {
+  return wrap(async (req, res) => {
+    const category = req.params.category || '';
+    const state = await cachedGetStateAsync(
+        (type || req.query.type)
+        ? '/' + (type || req.query.type) + '/' + category
+        : '/trending/' + category
+        );
+    const posts = addHumanTimestamps(patchLinks(state.content));
+    //console.log(state.content);
+    //console.log(posts);
+    res.render('home', {
+      appName,
+      latest: posts,
+      trending_url: '/' + category,
+      hot_url: '/hot/' + category,
+      new_url: '/created/' + category,
+      promoted_url: '/promoted/' + category,
+      helpers: {
+        stringify: (o) => JSON.stringify(o, null, 2),
+      }
+    });
+  });
+}
+
 app.get('/', wrap(async (req, res) => {
-  const state = await cachedGetStateAsync('/trending');
-  const posts = patchLinks(state.content);
+  const state = await cachedGetStateAsync(
+    req.query.type
+    ? '/' + req.query.type
+    : '/trending'
+  );
+  const posts = addHumanTimestamps(patchLinks(state.content));
   //console.log(state.content);
   //console.log(posts);
   res.render('home', {
     appName,
     latest: posts,
+    trending_url: '/',
+    hot_url: '?type=hot',
+    new_url: '?type=created',
+    promoted_url: '?type=promoted',
+    helpers: {
+      stringify: (o) => JSON.stringify(o, null, 2),
+    }
   });
 }));
 
@@ -85,7 +141,7 @@ app.post('/themes', wrap(async (req, res) => {
   res.redirect('/themes');
 }));
 
-app.get('/:parent_permalink/:author/:permalink', wrap(async (req, res) => {
+app.get('/:parent_permalink/@:author/:permalink', wrap(async (req, res) => {
   const parent_permalink = req.params.parent_permalink;
   const author = req.params.author;
   const permalink = req.params.permalink;
@@ -96,10 +152,10 @@ app.get('/:parent_permalink/:author/:permalink', wrap(async (req, res) => {
   const state = await cachedGetStateAsync(
     `/${parent_permalink}/@${author}/${permalink}`
   );
-  console.log(Object.keys(state.content))
+  // console.log(Object.keys(state.content))
   const post = _.extend(state.content[author + '/' + permalink], {
     body_html: marked(state.content[author + '/' + permalink].body, {
-      sanitize: true,
+      // sanitize: true,
       gfm: true,
     }),
   });
@@ -110,7 +166,7 @@ app.get('/:parent_permalink/:author/:permalink', wrap(async (req, res) => {
   //console.log(state.content, post, meta);
 
   const themeName = req.cookies.theme_name || meta.theme;
-  if (themeName && themes.byName[themeName]) {
+  if (false && themeName && themes.byName[themeName]) {
     const theme = themes.byName[themeName];
     if (theme) {
       const templates = await expressHandlebars.create({

@@ -1,39 +1,62 @@
 <div class="Home">
-  <div class="jumbotron">
-    <h1>{{appName}}</h1>
-    <p class="lead">
-      {{appName}} is the easiest way to post content to the Steem and Steemit
-      network.
-    </p>
-    <div class="container">
-      <a href="/themes" class="btn btn-large btn-success">
-        View Available Themes
+  <div class="fluid-container">
+    <div style="padding: 0 15px;">
+      <a href="{{trending_url}}">
+        trending
       </a>
 
-      <br />
-      <br />
+      |
 
-      <code class="bash">
-        $ npm install -g steemcli
-      </code>
+      <a href="{{hot_url}}">
+        hot
+      </a>
+
+      |
+
+      <a href="{{new_url}}">
+        new
+      </a>
+
+      |
+
+      <a href="{{promoted_url}}">
+        promoted
+      </a>
     </div>
-  </div>
-
-  <div class="container">
-    <h2>Latest Posts Made with {{appName}}</h2>
 
     <div class="list-group">
       {{#each latest}}
         <div class="list-group-item">
-          <h4 class="list-group-item-heading">
-            <a href="{{link}}">
-              {{title}}
-            </a>
-          </h4>
+          <div class="list-group-item-votes-container">
+            <div class="list-group-item-votes">
+              {{net_votes}}
+            </div>
 
-          <p class="list-group-item-text">
-            By <a href="{{author_link}}">{{author}}</a>
-          </p>
+            <div class="list-group-item-payout">
+              ${{total_pending_payout_value}}
+            </div>
+          </div>
+
+          <div class="list-group-item-content-container">
+            <h4 class="list-group-item-heading">
+              <a href="{{link}}">
+                {{title}}
+              </a>
+            </h4>
+
+            <p class="list-group-item-text">
+              submitted {{human_timestamp}} ago by <a href="{{author_link}}">{{author}}</a>
+              in <a href="/{{category}}">{{category}}</a>
+            </p>
+
+            <p class="list-group-item-text list-group-item-subtext">
+              {{#if no_comments}}
+                <a href="https://steemit.com{{url}}">no comments</a>
+              {{else}}
+                <a href="https://steemit.com{{url}}">{{children}} comments</a>
+              {{/if}}
+            </p>
+          </div>
         </div>
       {{/each}}
     </div>
