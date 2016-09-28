@@ -38,6 +38,6 @@
     "test-postinstall": "git clean -fd; make ghost-themes",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Pedro Tacla Yamada",
+  "license": "GPLv3"
 }
