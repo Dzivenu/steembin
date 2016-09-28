@@ -73,7 +73,7 @@ app.get('/goto', (req, res) => {
 
 app.get('/trending/:category?', handler('trending'));
 app.get('/hot/:category?', handler('hot'));
-app.get('/new/:category?', handler('new'));
+app.get('/created/:category?', handler('created'));
 app.get('/promoted/:category?', handler('promoted'));
 app.get('/:category?', handler());
 
