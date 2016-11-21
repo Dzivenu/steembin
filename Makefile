@@ -1,4 +1,5 @@
 ghost-themes: FORCE
+	which cat
 	node find-ghost-themes.js
 	for i in ./views/layouts/themes/*; do \
 			echo $$i; \
