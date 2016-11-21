@@ -5,7 +5,7 @@ ghost-themes: FORCE
 			if [ -d $$i ]; then \
 				echo $$i; \
 				cd $$i; \
-				unzip ./master.zip > /dev/null 2>&1; \
+				unzip ./master.zip; \
 				rm ./master.zip; \
 				rm -rf ./*/node_modules; \
 				cd -; \
