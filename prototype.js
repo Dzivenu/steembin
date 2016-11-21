@@ -64,68 +64,18 @@ function wrap(fn) {
   };
 }
 
+app.get('/say', wrap(async (req, res) => {
+  res.render('say', {
+    layout: 'none',
+  });
+}));
+
 app.use('/static', express.static('./static'));
 app.use('/themes', express.static('./views/themes'));
 
 app.get('/goto', (req, res) => {
   res.redirect(req.query.category || '/');
 });
-
-app.get('/trending/:category?', handler('trending'));
-app.get('/hot/:category?', handler('hot'));
-app.get('/created/:category?', handler('created'));
-app.get('/promoted/:category?', handler('promoted'));
-app.get('/:category?', handler());
-
-function handler(type) {
-  return wrap(async (req, res) => {
-    const category = req.params.category || '';
-    const state = await cachedGetStateAsync(
-        (type || req.query.type)
-        ? '/' + (type || req.query.type) + '/' + category
-        : '/trending/' + category
-        );
-    const posts = addHumanTimestamps(patchLinks(state.content));
-    //console.log(state.content);
-    //console.log(posts);
-    res.render('home', {
-      appName,
-      latest: posts,
-      trending_url: '/' + category,
-      hot_url: '/hot/' + category,
-      new_url: '/created/' + category,
-      promoted_url: '/promoted/' + category,
-      helpers: {
-        stringify: (o) => JSON.stringify(o, null, 2),
-      }
-    });
-  });
-}
-
-app.get('/', wrap(async (req, res) => {
-  const state = await cachedGetStateAsync(
-    req.query.type
-    ? '/' + req.query.type
-    : '/trending'
-  );
-  const posts = addHumanTimestamps(patchLinks(state.content));
-  //console.log(state.content);
-  //console.log(posts);
-  res.render('home', {
-    appName,
-    latest: posts,
-    trending_url: '/',
-    hot_url: '?type=hot',
-    new_url: '?type=created',
-    promoted_url: '?type=promoted',
-    helpers: {
-      stringify: (o) => JSON.stringify(o, null, 2),
-    }
-  });
-}));
-
-const themes = require('./themes');
-const ghThemes = _.filter(themes, {url_type: 'github'})
 
 app.get('/themes', wrap(async (req, res) => {
   res.render('themes', {
@@ -207,6 +157,62 @@ app.get('/:parent_permalink/@:author/:permalink', wrap(async (req, res) => {
     post,
   });
 }));
+
+app.get('/trending/:category?', handler('trending'));
+app.get('/hot/:category?', handler('hot'));
+app.get('/created/:category?', handler('created'));
+app.get('/promoted/:category?', handler('promoted'));
+app.get('/:category?', handler());
+
+function handler(type) {
+  return wrap(async (req, res) => {
+    const category = req.params.category || '';
+    const state = await cachedGetStateAsync(
+        (type || req.query.type)
+        ? '/' + (type || req.query.type) + '/' + category
+        : '/trending/' + category
+        );
+    const posts = addHumanTimestamps(patchLinks(state.content));
+    //console.log(state.content);
+    //console.log(posts);
+    res.render('home', {
+      appName,
+      latest: posts,
+      trending_url: '/' + category,
+      hot_url: '/hot/' + category,
+      new_url: '/created/' + category,
+      promoted_url: '/promoted/' + category,
+      helpers: {
+        stringify: (o) => JSON.stringify(o, null, 2),
+      }
+    });
+  });
+}
+
+app.get('/', wrap(async (req, res) => {
+  const state = await cachedGetStateAsync(
+    req.query.type
+    ? '/' + req.query.type
+    : '/trending'
+  );
+  const posts = addHumanTimestamps(patchLinks(state.content));
+  //console.log(state.content);
+  //console.log(posts);
+  res.render('home', {
+    appName,
+    latest: posts,
+    trending_url: '/',
+    hot_url: '?type=hot',
+    new_url: '?type=created',
+    promoted_url: '?type=promoted',
+    helpers: {
+      stringify: (o) => JSON.stringify(o, null, 2),
+    }
+  });
+}));
+
+const themes = require('./themes');
+const ghThemes = _.filter(themes, {url_type: 'github'})
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
