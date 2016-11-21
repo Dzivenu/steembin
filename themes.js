@@ -7,7 +7,7 @@ const themes = fs.readdirSync('./views/layouts/themes')
   .map(fp => {
     const theme = require('./views/layouts/themes/' + fp)
     return _.extend(theme, {
-      filepath: './themes/' + theme.name + '/' +
+      filepath: './layouts/themes/' + theme.name + '/' +
         fs.readdirSync('./views/layouts/themes/' + path.basename(fp, '.json'))
           .filter(d => path.extname(d) !== '.zip')[0],
     });
