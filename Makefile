@@ -21,6 +21,6 @@ ghost-themes: FORCE
 		done
 	rm -rf ./views/layouts/themes/**/*/node_modules
 	rm -rf ./views/layouts/themes/**/*/bower_components
-	# cp -r ./views/layouts/themes ./views/themes
+	cp -r ./views/layouts/themes ./views/themes
 
 FORCE:
