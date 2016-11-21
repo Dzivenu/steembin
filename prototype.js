@@ -121,7 +121,7 @@ app.get('/:parent_permalink/@:author/:permalink', wrap(async (req, res) => {
     if (theme) {
       const templates = await expressHandlebars.create({
         extname: '.hbs'
-      }).getTemplates('./views/layouts/' + theme.filepath);
+      }).getTemplates('./views/' + theme.filepath);
       // console.log(post);
 
       res.render(theme.filepath + '/post.hbs', {
