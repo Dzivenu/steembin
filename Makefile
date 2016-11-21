@@ -7,13 +7,11 @@ ghost-themes: FORCE
 				rm ./master.zip; \
 				rm -rf ./*/node_modules; \
 				cd -; \
-
 				if [ -f $$i/*/post.hbs ]; then echo "Skip"; \
 				else \
 					rm -rf $$i; \
 					rm -rf $$i.json; \
 				fi; \
-
 				if [[ \`$$i.json | grep github\` ]]; then echo "Skip"; \
 				else \
 					rm -rf $$i; \
