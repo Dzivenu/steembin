@@ -11,8 +11,8 @@ ghost-themes: FORCE
 				cd -; \
 			fi; \
 		done
-	rm -rf ./views/layouts/themes/**/*/node_modules
-	rm -rf ./views/layouts/themes/**/*/bower_components
-	cp -r ./views/layouts/themes ./views/themes
+	rm -rf ./views/layouts/themes/**/node_modules
+	rm -rf ./views/layouts/themes/**/bower_components
+	ln -s ./views/layouts/themes ./views/themes
 
 FORCE:
