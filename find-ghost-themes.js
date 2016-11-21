@@ -39,12 +39,12 @@ whileNoError(getThemes, function(err, allResults) {
 
   groups.github.forEach((theme) => {
     const target = theme.url + '/archive/master.zip';
-    mkdirp.sync('./views/themes/' + theme.name);
-    fs.writeFileSync('./views/themes/' + theme.name + '.json', JSON.stringify(theme, null, 2))
+    mkdirp.sync('./views/layouts/themes/' + theme.name);
+    fs.writeFileSync('./views/layouts/themes/' + theme.name + '.json', JSON.stringify(theme, null, 2))
     console.log('Write ' + theme.name + '.json...');
     console.log('Downloading ' + theme.name + '...');
     const outS = request.get(target)
-      .pipe(fs.createWriteStream('./views/themes/' + theme.name + '/master.zip'))
+      .pipe(fs.createWriteStream('./views/layouts/themes/' + theme.name + '/master.zip'))
       .on('done', () => console.log('Downloaded ' + theme.name))
       .on('error', () => console.log('Error ' + theme.name));
   });
