@@ -1,6 +1,6 @@
 ghost-themes: FORCE
 	node find-ghost-themes.js
-	for i in ./views/themes/*; do \
+	for i in ./views/layouts/themes/*; do \
 			if [ -d $$i ]; then \
 				cd $$i; \
 				unzip ./master.zip > /dev/null 2>&1; \
@@ -21,8 +21,8 @@ ghost-themes: FORCE
 				fi; \
 			fi; \
 		done
-	rm -rf ./views/themes/**/*/node_modules
-	rm -rf ./views/themes/**/*/bower_components
-	cp -r ./views/themes ./views/layouts/themes
+	rm -rf ./views/layouts/themes/**/*/node_modules
+	rm -rf ./views/layouts/themes/**/*/bower_components
+	# cp -r ./views/layouts/themes ./views/themes
 
 FORCE:
