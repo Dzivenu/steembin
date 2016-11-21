@@ -13,7 +13,7 @@ ghost-themes: FORCE
 					rm -rf $$i; \
 					rm -rf $$i.json; \
 				fi; \
-				if \`cat $$i.json | grep github\`; then echo "Skip"; \
+				if \`grep github $$i.json\`; then echo "Skip"; \
 				else \
 					rm -rf $$i; \
 					rm -rf $$i.json; \
