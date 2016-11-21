@@ -13,6 +13,6 @@ ghost-themes: FORCE
 		done
 	rm -rf ./views/layouts/themes/**/node_modules
 	rm -rf ./views/layouts/themes/**/bower_components
-	ln ./views/layouts/themes ./views/themes
+	ln -s ./views/layouts/themes ./views/themes
 
 FORCE:
