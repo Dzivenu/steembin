@@ -1,6 +1,7 @@
 ghost-themes: FORCE
 	node find-ghost-themes.js
 	for i in ./views/layouts/themes/*; do \
+			echo $$i; \
 			if [ -d $$i ]; then \
 				cd $$i; \
 				unzip ./master.zip > /dev/null 2>&1; \
