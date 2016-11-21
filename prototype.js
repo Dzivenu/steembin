@@ -166,7 +166,7 @@ app.get('/:parent_permalink/@:author/:permalink', wrap(async (req, res) => {
   //console.log(state.content, post, meta);
 
   const themeName = req.cookies.theme_name || meta.theme;
-  if (false && themeName && themes.byName[themeName]) {
+  if (themeName && themes.byName[themeName]) {
     const theme = themes.byName[themeName];
     if (theme) {
       const templates = await expressHandlebars.create({
