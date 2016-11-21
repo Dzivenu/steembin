@@ -2,23 +2,13 @@ ghost-themes: FORCE
 	which cat
 	node find-ghost-themes.js
 	for i in ./views/layouts/themes/*; do \
-			echo $$i; \
 			if [ -d $$i ]; then \
+				echo $$i; \
 				cd $$i; \
 				unzip ./master.zip > /dev/null 2>&1; \
 				rm ./master.zip; \
 				rm -rf ./*/node_modules; \
 				cd -; \
-				if [ -f $$i/*/post.hbs ]; then echo "Skip"; \
-				else \
-					rm -rf $$i; \
-					rm -rf $$i.json; \
-				fi; \
-				if \`grep github $$i.json\`; then echo "Skip"; \
-				else \
-					rm -rf $$i; \
-					rm -rf $$i.json; \
-				fi; \
 			fi; \
 		done
 	rm -rf ./views/layouts/themes/**/*/node_modules
